@@ -17,15 +17,13 @@ Public Class ImageHelper
             Dim newHeight = CType(SourceImage.Height * scaleFactor, Integer)
 
             Dim thumbnailBitmap = New Bitmap(newWidth, newHeight)
-            Dim thumbnailGraph = Graphics.FromImage(thumbnailBitmap)
-            thumbnailGraph.CompositingQuality = CompositingQuality.HighQuality
-            thumbnailGraph.SmoothingMode = SmoothingMode.HighQuality
-            thumbnailGraph.InterpolationMode = InterpolationMode.HighQualityBicubic
-
-            Dim imageRectangle = New Rectangle(0, 0, newWidth, newHeight)
-
-            thumbnailGraph.DrawImage(SourceImage, imageRectangle)
-            thumbnailGraph.Dispose()
+            Using thumbnailGraph = Graphics.FromImage(thumbnailBitmap)
+                thumbnailGraph.CompositingQuality = CompositingQuality.HighQuality
+                thumbnailGraph.SmoothingMode = SmoothingMode.HighQuality
+                thumbnailGraph.InterpolationMode = InterpolationMode.HighQualityBicubic
+                Dim imageRectangle = New Rectangle(0, 0, newWidth, newHeight)
+                thumbnailGraph.DrawImage(SourceImage, imageRectangle)
+            End Using
             Return thumbnailBitmap
 
         Catch ex As Exception
@@ -41,18 +39,18 @@ Public Class ImageHelper
 
 
             Dim btmCropped As New Bitmap((BottomRight.X - TopLeft.X), (BottomRight.Y - TopLeft.Y))
-            Dim grpOriginal As Graphics = Graphics.FromImage(btmCropped)
+            Using grpOriginal As Graphics = Graphics.FromImage(btmCropped)
 
-            grpOriginal.DrawImage(OriginalImage,
+                grpOriginal.DrawImage(OriginalImage,
                               New Rectangle(0, 0, btmCropped.Width, btmCropped.Height),
                                             TopLeft.X, TopLeft.Y, btmCropped.Width,
                                             btmCropped.Height, GraphicsUnit.Pixel)
-            grpOriginal.Dispose()
+            End Using
             Return (btmCropped)
         Catch ex As Exception
             LogHelper.HandleException(ex)
         End Try
-Return Nothing
+        Return Nothing
     End Function
 
 
