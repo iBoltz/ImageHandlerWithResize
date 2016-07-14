@@ -138,7 +138,9 @@ Public Class PhotoHandler : Implements IHttpHandler, IReadOnlySessionState
 
             If (LocalPath.LastIndexOf("\"c) > 0) Then
                 ThisFileName = LocalPath.Substring(LocalPath.LastIndexOf("\"c) + 1, LocalPath.Length - LocalPath.LastIndexOf("\"c) - 1)
+                If ThisFileName Is Nothing Then Return
                 ThisFolder = LocalPath.Remove(LocalPath.LastIndexOf("\"c), LocalPath.Length - LocalPath.LastIndexOf("\"c))
+                If ThisFolder Is Nothing Then Return
                 SrcImage.Save(ThisFolder & "\" & ImageWidth & "_" & ImageHeight & "_" & ThisFileName)
             End If
         Catch ex As Exception
