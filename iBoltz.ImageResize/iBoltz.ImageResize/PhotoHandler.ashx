@@ -18,6 +18,7 @@ Public Class PhotoHandler : Implements IHttpHandler, IReadOnlySessionState
     Private ScaleRatio As Double?
     Public Sub ProcessRequest(ByVal Context As HttpContext) Implements IHttpHandler.ProcessRequest
         Try
+
             Context.Response.Clear()
             Context.Response.ContentType = "image/png"
 
